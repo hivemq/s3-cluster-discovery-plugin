@@ -49,7 +49,13 @@ public class S3ClientProvider implements Provider<AmazonS3> {
             throw new UnrecoverableException();
         }
 
-        final AmazonS3 s3 = new AmazonS3Client(credentialsProvider);
+        final AmazonS3 s3;
+        try {
+            s3 = new AmazonS3Client(credentialsProvider);
+        } catch (Exception e) {
+            log.error("Not able to authenticate with S3, shutting down HiveMQ");
+            throw new UnrecoverableException();
+        }
 
         final Regions regions = configuration.getRegion();
         if (regions == null) {
