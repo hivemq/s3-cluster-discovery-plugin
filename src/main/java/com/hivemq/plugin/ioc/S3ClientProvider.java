@@ -2,6 +2,7 @@ package com.hivemq.plugin.ioc;
 
 import com.amazonaws.auth.*;
 import com.amazonaws.auth.profile.ProfileCredentialsProvider;
+import com.amazonaws.internal.StaticCredentialsProvider;
 import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
@@ -40,15 +41,15 @@ public class S3ClientProvider implements Provider<AmazonS3> {
             throw new UnrecoverableException();
         }
 
-        final AWSCredentials credentials;
+        final AWSCredentialsProvider credentialsProvider;
         try {
-            credentials = getAwsCredentials(authenticationType);
+            credentialsProvider = getAwsCredentials(authenticationType);
         } catch (Exception e) {
             log.error("Not able to authenticate with S3, shutting down HiveMQ");
             throw new UnrecoverableException();
         }
 
-        final AmazonS3 s3 = new AmazonS3Client(credentials);
+        final AmazonS3 s3 = new AmazonS3Client(credentialsProvider);
 
         final Regions regions = configuration.getRegion();
         if (regions == null) {
@@ -83,40 +84,40 @@ public class S3ClientProvider implements Provider<AmazonS3> {
         return s3;
     }
 
-    private AWSCredentials getAwsCredentials(final AuthenticationType authenticationType) {
-        final AWSCredentials credentials;
+    private AWSCredentialsProvider getAwsCredentials(final AuthenticationType authenticationType) {
+        final AWSCredentialsProvider credentialsProvider;
         switch (authenticationType) {
             case DEFAULT:
-                credentials = new DefaultAWSCredentialsProviderChain().getCredentials();
+                credentialsProvider = new DefaultAWSCredentialsProviderChain();
                 break;
             case ENVIRONMENT_VARIABLES:
-                credentials = new EnvironmentVariableCredentialsProvider().getCredentials();
+                credentialsProvider = new EnvironmentVariableCredentialsProvider();
                 break;
             case JAVA_SYSTEM_PROPERTIES:
-                credentials = new SystemPropertiesCredentialsProvider().getCredentials();
+                credentialsProvider = new SystemPropertiesCredentialsProvider();
                 break;
             case USER_CREDENTIALS_FILE:
-                credentials = new ProfileCredentialsProvider().getCredentials();
+                credentialsProvider = new ProfileCredentialsProvider();
                 break;
             case INSTANCE_PROFILE_CREDENTIALS:
-                credentials = new InstanceProfileCredentialsProvider().getCredentials();
+                credentialsProvider = new InstanceProfileCredentialsProvider();
                 break;
             case ACCESS_KEY:
             case TEMPORARY_SESSION:
                 final String accessKey = configuration.getAccessKeyId();
                 final String secretAccessKey = configuration.getSecretAccessKey();
                 if (authenticationType == AuthenticationType.ACCESS_KEY) {
-                    credentials = new BasicAWSCredentials(accessKey, secretAccessKey);
+                    credentialsProvider = new StaticCredentialsProvider(new BasicAWSCredentials(accessKey, secretAccessKey));
                     break;
                 }
 
                 final String sessionToken = configuration.getSessionToken();
-                credentials = new BasicSessionCredentials(accessKey, secretAccessKey, sessionToken);
+                credentialsProvider = new StaticCredentialsProvider(new BasicSessionCredentials(accessKey, secretAccessKey, sessionToken));
                 break;
             default:
                 throw new IllegalArgumentException("Unknown credentials type");
         }
-        return credentials;
+        return credentialsProvider;
     }
 
 }
