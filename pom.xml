@@ -20,7 +20,7 @@
 
     <groupId>com.hivemq.plugin</groupId>
     <artifactId>s3-cluster-discovery-plugin</artifactId>
-    <version>1.0</version>
+    <version>1.1.0</version>
 
     <description>HiveMQ S3 Discover Plugin - Adds cluster node discovery via AWS S3 to HiveMQ</description>
 

@@ -31,7 +31,7 @@ import com.hivemq.spi.plugin.meta.Information;
  *
  * @author Christian Götz
  */
-@Information(name = "HiveMQ S3 Cluster Discovery Plugin", author = "Christoph Schäbel", version = "1.0.0")
+@Information(name = "HiveMQ S3 Cluster Discovery Plugin", author = "Christoph Schäbel", version = "1.1.0")
 public class S3DiscoveryPluginModule extends HiveMQPluginModule {
 
     /**
