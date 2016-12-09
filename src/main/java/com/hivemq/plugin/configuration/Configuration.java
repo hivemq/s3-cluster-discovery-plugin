@@ -68,10 +68,16 @@ public class Configuration {
     }
 
     public String getFilePrefix() {
-        final String property = getProperty("file-prefix");
-        if (property == null) {
-            return "";
+        final String property;
+
+        if (System.getenv("S3_FILE_PREFIX") != null) {
+            property = System.getenv("S3_FILE_PREFIX");
+        } else if (getProperty("file-prefix") != null) {
+            property = getProperty("file-prefix");
+        } else {
+            property = "";
         }
+
         return property;
     }
 
