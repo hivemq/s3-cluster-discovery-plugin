@@ -17,6 +17,7 @@
 package com.hivemq.plugin.configuration;
 
 import com.amazonaws.regions.Regions;
+import com.amazonaws.services.s3.internal.Constants;
 import com.google.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -133,6 +134,15 @@ public class Configuration {
 
     public String getSessionToken() {
         return getProperty("credentials-session-token");
+    }
+
+    public String getEndpoint() {
+        final String property = getProperty("s3-endpoint");
+        if (property == null) {
+            return Constants.S3_HOSTNAME;
+        }
+
+        return property;
     }
 
     private String getProperty(final String key) {

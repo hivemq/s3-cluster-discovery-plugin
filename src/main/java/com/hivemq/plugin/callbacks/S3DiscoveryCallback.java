@@ -45,6 +45,7 @@ public class S3DiscoveryCallback implements ClusterDiscoveryCallback {
                                final Configuration configuration,
                                final PluginExecutorService pluginExecutorService) {
         this.s3 = s3;
+        this.s3.setEndpoint(configuration.getEndpoint());
         this.configuration = configuration;
         this.pluginExecutorService = pluginExecutorService;
         this.bucketName = configuration.getBucketName();
