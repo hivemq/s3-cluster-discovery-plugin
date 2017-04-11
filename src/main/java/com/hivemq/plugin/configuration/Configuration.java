@@ -145,6 +145,10 @@ public class Configuration {
         return property;
     }
 
+    public boolean withPathStyleAccess() {
+        return Boolean.parseBoolean(getProperty("s3-path-style-access"));
+    }
+
     private String getProperty(final String key) {
         if (properties == null) {
             return null;

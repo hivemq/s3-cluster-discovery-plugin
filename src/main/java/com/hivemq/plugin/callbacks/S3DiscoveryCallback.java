@@ -1,6 +1,7 @@
 package com.hivemq.plugin.callbacks;
 
 import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.S3ClientOptions;
 import com.amazonaws.services.s3.model.*;
 import com.amazonaws.util.StringInputStream;
 import com.google.common.io.BaseEncoding;
@@ -46,6 +47,7 @@ public class S3DiscoveryCallback implements ClusterDiscoveryCallback {
                                final PluginExecutorService pluginExecutorService) {
         this.s3 = s3;
         this.s3.setEndpoint(configuration.getEndpoint());
+        this.s3.setS3ClientOptions(new S3ClientOptions().withPathStyleAccess(configuration.withPathStyleAccess()));
         this.configuration = configuration;
         this.pluginExecutorService = pluginExecutorService;
         this.bucketName = configuration.getBucketName();
