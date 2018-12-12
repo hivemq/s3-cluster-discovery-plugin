@@ -1,4 +1,8 @@
+:extension: https://github.com/hivemq/hivemq-s3-cluster-discovery-extension
+
 == HiveMQ S3 Cluster Discovery Plugin
+
+NOTE: HiveMQ 4 uses a new extension system. This HiveMQ 3 plugin is not compatible with HiveMQ 4. The new version can be found {extension}[here].
 
 This plugin allows your HiveMQ cluster nodes to discover each other dynamically by exchanging their information via S3 from Amazon Web Services.
 
