@@ -180,3 +180,11 @@ credentials-access-key-id:<your-access_key_id>
 credentials-secret-access-key:<your-secret_access_key>
 credentials-session-token:<your-session_token>
 ----
+
+= Contributing
+
+If you want to contribute to HiveMQ S3 Cluster Discovery Plugin, see the link:CONTRIBUTING.md[contribution guidelines].
+
+= License
+
+HiveMQ S3 Cluster Discovery Plugin is licensed under the `APACHE LICENSE, VERSION 2.0`. A copy of the license can be found link:LICENSE.txt[here].
